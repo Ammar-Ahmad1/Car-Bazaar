@@ -1,53 +1,137 @@
-import React, { useEffect, useRef } from 'react';
-import { View } from 'react-native';
-import * as THREE from 'three';
-import { GLView } from 'expo-gl';
+import * as React from 'react';
+import { Text, View } from 'react-native';
+import { ExpoWebGLRenderingContext, GLView } from 'expo-gl';
+import { Renderer } from 'expo-three';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { Asset } from 'expo-asset';
 
 const CarViewer = () => {
-  const containerRef = useRef();
+  const [modelLoaded, setModelLoaded] = React.useState(null);
+  const [isLoading, setLoading] = React.useState(true);
+  const [isMoving, setMoving] = React.useState(false);
+  const [initialTouchPosition, setInitialTouchPosition] = React.useState({ x: 0, y: 0 });
+  const [currentTouchPosition, setCurrentTouchPosition] = React.useState({ x: 0, y: 0 });
 
-  const onContextCreate = async (gl) => {
-    // Create a scene
-    const scene = new THREE.Scene();
+  React.useEffect(() => {
+    const loadModel = async () => {
+      if (!modelLoaded) {
+        const asset = Asset.fromModule(require('../assets/Audi.obj'));
+        console.log('Downloading asset...');
+        await asset.downloadAsync();
+        console.log('Asset downloaded.');
 
-    // Create a camera
-    const camera = new THREE.PerspectiveCamera(75, gl.drawingBufferWidth / gl.drawingBufferHeight, 0.1, 1000); // Adjust aspect ratio
+        const loader = new OBJLoader();
+        loader.load(
+          asset.localUri,
+          (object) => {
+            console.log('3D model loaded');
+            object.rotation.set(0, 0, 0);
+            setModelLoaded(object);
+            setLoading(false);
+          },
+          (xhr) => {
+            console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+          },
+          (error) => {
+            console.error('Error loading 3D model:', error);
+            setLoading(false);
+          }
+        );
+      }
+    };
 
-    // Create a renderer
-    const renderer = new THREE.WebGLRenderer({ context: gl, antialias: true });
+    loadModel();
+  }, [modelLoaded]);
 
-    // Set the size of the renderer
-    renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
+  const handleTouchStart = (event) => {
+    const { nativeEvent } = event;
+    setInitialTouchPosition({ x: nativeEvent.locationX, y: nativeEvent.locationY });
+    setCurrentTouchPosition({ x: nativeEvent.locationX, y: nativeEvent.locationY });
+    setMoving(true);
+  };
 
-    // Load the 3D model from the provided URL
-    const modelURL = 'https://file.io/uHzlZO8qNkhV'; // Replace with your model URL
-    const loader = new THREE.OBJLoader();
-    console.log(modelURL)
-    loader.load(modelURL, (geometry) => {
-      // Create a material
-      const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-      const mesh = new THREE.Mesh(geometry, material);
+  const handleTouchMove = (event) => {
+    if (isMoving) {
+      const { nativeEvent } = event;
+      const deltaX = nativeEvent.locationX - currentTouchPosition.x;
+      const deltaY = nativeEvent.locationY - currentTouchPosition.y;
 
-      // Add the mesh to the scene
-      scene.add(mesh);
+      if (modelLoaded) {
+        const { rotation } = modelLoaded;
+        rotation.x -= deltaY * 0.01; // Adjust the sensitivity as needed
+        rotation.y += deltaX * 0.01; // Adjust the sensitivity as needed
+      }
 
-      // Set the camera position
-      camera.position.z = 5;
+      setCurrentTouchPosition({ x: nativeEvent.locationX, y: nativeEvent.locationY });
+    }
+  };
 
-      // Create an animation loop
-      const animate = () => {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-        gl.endFrameEXP(); // Important for Expo's GLView
-      };
-
-      animate();
-    });
+  const handleTouchEnd = () => {
+    setMoving(false);
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <GLView style={{ flex: 1 }} onContextCreate={onContextCreate} ref={containerRef} />
+    <View>
+      {isLoading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text>Loading...</Text>
+        </View>
+      ) : (
+        <View>
+          <GLView
+            style={{
+              aspectRatio: 1,
+              borderBottomWidth: 1,
+              borderTopWidth: 1,
+            }}
+            onContextCreate={(gl: ExpoWebGLRenderingContext) => {
+              const renderer = new Renderer({ gl });
+              renderer.setSize(gl.drawingBufferWidth, gl.drawingBufferHeight);
+              const scene = new THREE.Scene();
+              const light = new THREE.DirectionalLight(0xffffff, 1);
+              scene.background = new THREE.Color(0xeeeeee);
+
+              light.position.set(0, 1, 0);
+              scene.add(light);
+
+              const camera = new THREE.PerspectiveCamera(
+                80,
+                gl.drawingBufferWidth / gl.drawingBufferHeight,
+                0.1,
+                1000
+              );
+              camera.position.set(0, 1, 5);
+              camera.lookAt(0, 1, 0);
+
+              const animate = () => {
+                if (modelLoaded && isMoving) {
+                  const { rotation } = modelLoaded;
+                  rotation.z += 0.005; // You can add rotation here without touch
+                }
+
+                if (modelLoaded) {
+                  const { rotation } = modelLoaded;
+                  scene.add(modelLoaded);
+                  renderer.render(scene, camera);
+                }
+
+                gl.endFrameEXP();
+                requestAnimationFrame(animate);
+              };
+              animate();
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          />
+        </View>
+      )}
     </View>
   );
 };

@@ -19,6 +19,7 @@ export default function App() {
     Montserrat_Regular: require("./assets/fonts/Montserrat-Regular.ttf"),
     Montserrat_Light: require("./assets/fonts/Montserrat-Light.ttf"),
   });
+  console.log(fontsLoaded)
   if(!fontsLoaded){
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

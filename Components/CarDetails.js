@@ -9,11 +9,13 @@ import {
   Modal,
   TextInput,
 } from "react-native";
+import { Button } from "react-native-paper";
 import { useUserState } from "../src/Slices/userSlice.js";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { BACKEND } from "../CONSTANTS.js";
+import CarViewer from "./CarViewer.js";
 
 const CarDetails = ({ car, getCars }) => {
   const navigation = useNavigation();
@@ -184,7 +186,13 @@ const CarDetails = ({ car, getCars }) => {
           inactiveDotScale={0.6}
         />
       </View>
-
+      <View
+      style = {styles.carModelContainer}
+      >
+       <ScrollView scrollEnabled={false}>
+      <CarViewer />
+    </ScrollView>
+      </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.makeModelText}>
           {car.make} {car.model} {car.year}
@@ -240,7 +248,7 @@ const CarDetails = ({ car, getCars }) => {
                 </Text>
               ) : null}
             </>
-          ) : isOwner && !car.winningBid? (
+          ) : isOwner && !car.winningBid ? (
             <TouchableOpacity
               style={styles.startBiddingButton}
               onPress={handleStartBidding}
@@ -248,16 +256,16 @@ const CarDetails = ({ car, getCars }) => {
               <Text style={styles.startBiddingButtonText}>Start Bidding</Text>
             </TouchableOpacity>
           ) : (
-            <Text style={{
-              fontSize: 18,
-              marginTop: 20,
-              padding: 10,
-              backgroundColor: "yellow",
-              color: "black",
-
-            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                marginTop: 20,
+                padding: 10,
+                backgroundColor: "yellow",
+                color: "black",
+              }}
+            >
               Bidding is not avaiable for this car.
-              
             </Text>
           )}
         </>
@@ -268,13 +276,15 @@ const CarDetails = ({ car, getCars }) => {
               <Text style={styles.bidButtonText}>Place a Bid</Text>
             </TouchableOpacity>
           ) : car.winningBidder?._id === user.id ? (
-            <Text style={{
-              fontSize: 18,
-              marginTop: 20,
-              padding: 10,
-              backgroundColor: "green",
-              color: "white",
-            }}>
+            <Text
+              style={{
+                fontSize: 18,
+                marginTop: 20,
+                padding: 10,
+                backgroundColor: "green",
+                color: "white",
+              }}
+            >
               Congartulations!! You are the winning bidder!
             </Text>
           ) : (
@@ -342,6 +352,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
+  carModelContainer: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    flex: 1,
+    // aspectRatio: 1,
+    marginTop: 20,
+  },
+
   makeModelText: {
     fontSize: 24,
     fontWeight: "bold",
