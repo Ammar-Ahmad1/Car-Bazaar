@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import {
   View,
   Dimensions,
@@ -7,18 +7,30 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import {Button} from 'react-native-paper';
 const Height = Dimensions.get("window").height;
 const Width = Dimensions.get("window").width;
 // import { useNavigation } from '@react-navigation/native';
 
-const BigImageCard = ({ item, navigation, getCars }) => {
+const BigImageCard = ({ item, navigation, getCars,selectCar,selectedCars }) => {
   //   const navigation = useNavigation();
+  const [selected, setSelected] = useState(false);
 
+  useEffect(() => {
+    if(selectedCars.includes(item)){
+      setSelected(true);
+    }
+    else{
+      setSelected(false);
+    }
+  }, [selectedCars])
   const handleCardPress = () => {
     // Navigate to the CarDetails screen, passing the car item as a parameter
     navigation.navigate("Detail", { car: item });
   };
-
+const handleComparePress = () => {
+  selectCar(item);
+}
   return (
     <TouchableOpacity onPress={handleCardPress}>
       <View
@@ -63,6 +75,12 @@ const BigImageCard = ({ item, navigation, getCars }) => {
         <Text style={{ paddingHorizontal: 10, fontSize: 18 }}>
           Current Bid: {item.currentBid===0 ? "No bids yet" :item.currentBid}
         </Text>
+        <Button mode="outlined" onPress={handleComparePress} style={{marginVertical:10}}
+        disabled={selected}
+        >
+          Add to compare
+        </Button>
+
       </View>
     </TouchableOpacity>
   );

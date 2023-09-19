@@ -9,6 +9,7 @@ import AddCar from "./src/Screens/AddCar";
 import DetailScreen from "./src/Screens/DetailScreen"
 import UserCars from "./src/Screens/UserCars";
 import Profile from "./src/Screens/Profile";
+import CarComparisonScreen from "./src/Screens/CarComparisonScreen";
 import { useUserState } from "./src/Slices/userSlice";
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ const MyRoutes = () => {
         <Stack.Screen name="Detail" component={DetailScreen} />
         <Stack.Screen name="userCars" component={UserCars} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="compare" component={CarComparisonScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

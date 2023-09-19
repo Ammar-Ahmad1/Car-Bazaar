@@ -28,6 +28,7 @@
         fuelType: '',
         location: '',
         seller: '',
+        contactPhone: '',
         images: [],
     });
 
@@ -75,7 +76,7 @@
               Alert.alert("Please select atleast one image")
               return
             }
-            if(formData.make==="" || formData.model==="" || formData.year==="" || formData.mileage==="" || formData.price==="" || formData.description==="" || formData.condition==="" || formData.fuelType==="" || formData.location===""){
+            if(formData.make==="" || formData.model==="" || formData.year==="" || formData.mileage==="" || formData.price==="" || formData.description==="" || formData.condition==="" || formData.fuelType==="" || formData.location==="" || formData.contactPhone===""){
               Alert.alert("Please fill all the fields")
               return
             }
@@ -168,12 +169,12 @@
             label="Contact Email"
             value={formData.contactEmail}
             onChangeText={(text) => handleInputChange('contactEmail', text)}
-        />
+        />*/}
         <TextInput
             label="Contact Phone"
             value={formData.contactPhone}
             onChangeText={(text) => handleInputChange('contactPhone', text)}
-        /> */}
+        /> 
         <Text style={{ fontSize: 24, marginVertical: 16 }}>Select Images</Text>
       <Button
         mode="contained"

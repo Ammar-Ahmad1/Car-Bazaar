@@ -7,7 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  Alert,
 } from "react-native";
+import {Button as Button1} from "react-native-paper";
 import { Modal } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import Slider from "@react-native-community/slider";
@@ -86,6 +88,7 @@ const HomeScreen = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
   const [yearFilter, setYearFilter] = useState("");
   const [priceFilter, setPriceFilter] = useState(0);
+  const [selectedCars, setSelectedCars] = useState([]);
   const toggleFilterModal = () => {
     setShowModal(!showModal);
   };
@@ -156,6 +159,8 @@ const HomeScreen = ({ navigation }) => {
           console.log(data.cars);
           setData(data.cars);
           setFilteredData(data.cars);
+          // selecte
+
         })
         .catch((err) => {
           console.log(err);
@@ -174,8 +179,11 @@ const HomeScreen = ({ navigation }) => {
       setFilteredData(data); // Reset to all cars when search text is empty
     } else {
       const newData = data.filter((item) => {
-        const itemData = item.make.toUpperCase() + item.model.toUpperCase()+ item.location.toUpperCase();
-        
+        const itemData =
+          item.make.toUpperCase() +
+          item.model.toUpperCase() +
+          item.location.toUpperCase();
+
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
@@ -205,6 +213,40 @@ const HomeScreen = ({ navigation }) => {
   const handleYourCars = () => {
     navigation.navigate("userCars");
   };
+  const selectCar = (car) => {
+    //if length is 2 then remove the first elements  after alert confirmation
+    if(selectedCars.length === 2){
+      Alert.alert(
+        "Alert",
+        "You have already selected two cars. Do you want to remove the first car and add this one?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => {return},
+            style: "cancel",
+          },
+          {
+            text: "Remove",
+            onPress: () => {
+              setSelectedCars([car]);
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+
+    // Check if the car is already selected
+    if (selectedCars.includes(car)) {
+      
+    } else {
+      // Check if two cars are already selected
+      if (selectedCars.length < 2) {
+        setSelectedCars([...selectedCars, car]);
+      }
+    }
+  };
+  
   return (
     <View style={styles.container}>
       <View style={styles.ImgContainer}>
@@ -218,21 +260,24 @@ const HomeScreen = ({ navigation }) => {
             onYourCars={handleYourCars}
           />
         )}
-        <Text style={{ fontSize: Height * 0.03, fontFamily: "Montserrat_Bold" }}>
+        <Text
+          style={{ fontSize: Height * 0.03, fontFamily: "Montserrat_Bold" }}
+        >
           Car Bazar
         </Text>
-          <Button title="Add Car" onPress={() => navigation.navigate("AddCar")} 
-          />
-        
+        <Button title="Add Car" onPress={() => navigation.navigate("AddCar")} />
       </View>
       {/* Header start  */}
       <View style={styles.headerContainer}>
-        <Text style={{
-          fontSize: Height * 0.03,
-          fontFamily: "Montserrat_Bold",
-          color: "#fff",
-
-        }}>Events</Text>
+        <Text
+          style={{
+            fontSize: Height * 0.03,
+            fontFamily: "Montserrat_Bold",
+            color: "#fff",
+          }}
+        >
+          Events
+        </Text>
         <View
           style={{
             width: "100%",
@@ -273,17 +318,42 @@ const HomeScreen = ({ navigation }) => {
           <FontAwesome name="filter" size={24} color="gray" />
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1 }}>
-        <View>
-          <Text style={styles.recommend}>Recommended</Text>
-        </View>
+      <View style={{ flex: 1,
+        justifyContent: "space-between",
+      }}>
         <View
-          
+        style={{ flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+        >
+          <Text style={styles.recommend}>Recommended</Text>
+          <Button1 
+          style={{ 
+            paddingHorizontal: "6%",
+            paddingVertical: "4%",
+            fontFamily: "Montserrat_Bold",
+            fontSize: Height * 0.02,
+            
+            borderColor: "black",
+            // backgroundColor: "black",
+          }}
+          disabled={selectedCars.length !== 2}
+        onPress={() => navigation.navigate("compare", { selectedCars })}
+        
+        >{`Compare (${selectedCars.length}/2)`}
+        </Button1>
+        </View>
+        
+        <View
+          style={{
+            width: "100%",
+            paddingBottom: "4%",
+          }}
         >
           <FlatList
             data={filteredData}
             renderItem={({ item }) => (
-              <BigImageCard item={item} navigation={navigation} />
+              <BigImageCard item={item} navigation={navigation} selectCar={selectCar} selectedCars={selectedCars}/>
             )}
             keyExtractor={(item) => item._id}
             contentContainerStyle={{ paddingHorizontal: 10 }}
@@ -323,7 +393,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     elevation: 3,
-    
   },
 
   userImg: {
@@ -346,7 +415,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     zIndex: 9999,
-
   },
   logouttext: {
     fontFamily: "Montserrat_Bold",
