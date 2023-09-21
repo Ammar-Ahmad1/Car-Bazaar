@@ -9,7 +9,7 @@ import {
   Button,
   Alert,
 } from "react-native";
-import {Button as Button1} from "react-native-paper";
+import { Button as Button1 } from "react-native-paper";
 import { Modal } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import Slider from "@react-native-community/slider";
@@ -160,7 +160,6 @@ const HomeScreen = ({ navigation }) => {
           setData(data.cars);
           setFilteredData(data.cars);
           // selecte
-
         })
         .catch((err) => {
           console.log(err);
@@ -215,14 +214,16 @@ const HomeScreen = ({ navigation }) => {
   };
   const selectCar = (car) => {
     //if length is 2 then remove the first elements  after alert confirmation
-    if(selectedCars.length === 2){
+    if (selectedCars.length === 2) {
       Alert.alert(
         "Alert",
         "You have already selected two cars. Do you want to remove the first car and add this one?",
         [
           {
             text: "Cancel",
-            onPress: () => {return},
+            onPress: () => {
+              return;
+            },
             style: "cancel",
           },
           {
@@ -238,7 +239,6 @@ const HomeScreen = ({ navigation }) => {
 
     // Check if the car is already selected
     if (selectedCars.includes(car)) {
-      
     } else {
       // Check if two cars are already selected
       if (selectedCars.length < 2) {
@@ -246,7 +246,7 @@ const HomeScreen = ({ navigation }) => {
       }
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.ImgContainer}>
@@ -268,6 +268,27 @@ const HomeScreen = ({ navigation }) => {
         <Button title="Add Car" onPress={() => navigation.navigate("AddCar")} />
       </View>
       {/* Header start  */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 10,
+        }}
+      >
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search Cars by name, city or model"
+          placeholderTextColor="black"
+          onChangeText={(text) => {
+            handleSearch(text);
+          }}
+          value={search} // Added value prop to keep the input field in sync with state
+        />
+        <TouchableOpacity style={styles.filterIcon} onPress={toggleFilterModal}>
+          <FontAwesome name="filter" size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.headerContainer}>
         <Text
           style={{
@@ -297,53 +318,27 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 10,
-        }}
-      >
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search Cars by name, city or model"
-          placeholderTextColor="black"
-          onChangeText={(text) => {
-            handleSearch(text);
-          }}
-          value={search} // Added value prop to keep the input field in sync with state
-        />
-        <TouchableOpacity style={styles.filterIcon} onPress={toggleFilterModal}>
-          <FontAwesome name="filter" size={24} color="gray" />
-        </TouchableOpacity>
-      </View>
-      <View style={{ flex: 1,
-        justifyContent: "space-between",
-      }}>
-        <View
-        style={{ flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-        >
+
+      <View style={{ flex: 1, justifyContent: "space-between" }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.recommend}>Recommended</Text>
-          <Button1 
-          style={{ 
-            paddingHorizontal: "6%",
-            paddingVertical: "4%",
-            fontFamily: "Montserrat_Bold",
-            fontSize: Height * 0.02,
-            
-            borderColor: "black",
-            // backgroundColor: "black",
-          }}
-          disabled={selectedCars.length !== 2}
-        onPress={() => navigation.navigate("compare", { selectedCars })}
-        
-        >{`Compare (${selectedCars.length}/2)`}
-        </Button1>
+          <Button1
+            style={{
+              paddingHorizontal: "6%",
+              paddingVertical: "4%",
+              fontFamily: "Montserrat_Bold",
+              fontSize: Height * 0.02,
+
+              borderColor: "black",
+              // backgroundColor: "black",
+            }}
+            disabled={selectedCars.length !== 2}
+            onPress={() => navigation.navigate("compare", { selectedCars })}
+          >
+            {`Compare (${selectedCars.length}/2)`}
+          </Button1>
         </View>
-        
+
         <View
           style={{
             width: "100%",
@@ -353,7 +348,12 @@ const HomeScreen = ({ navigation }) => {
           <FlatList
             data={filteredData}
             renderItem={({ item }) => (
-              <BigImageCard item={item} navigation={navigation} selectCar={selectCar} selectedCars={selectedCars}/>
+              <BigImageCard
+                item={item}
+                navigation={navigation}
+                selectCar={selectCar}
+                selectedCars={selectedCars}
+              />
             )}
             keyExtractor={(item) => item._id}
             contentContainerStyle={{ paddingHorizontal: 10 }}
