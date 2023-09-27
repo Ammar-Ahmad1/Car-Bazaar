@@ -161,7 +161,7 @@ const carModelPaths = {
   etron: require('../assets/etron.obj'),
   civic: require('../assets/civic.obj'),
   golf: require('../assets/golf.obj'),
-  class: require('../assets/benz.obj'),
+  class: require('../assets/sonata.obj'),
   lancer: require('../assets/lancer.obj'),
   sonata: require('../assets/sonata.obj'),
   glory: require('../assets/lancer.obj'),
