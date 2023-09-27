@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList,Text } from 'react-native';
 import { useUserState } from '../Slices/userSlice';
 import { BACKEND } from '../../CONSTANTS.js';
-import BigImageCard from '../../Components/BigImageCard'; // Make sure to import BigImageCard
+import UserCard from '../../Components/UserCard'; // Make sure to import UserCard
+// import BigImageCard from '../../Components/BigImageCard'; // Make sure to import BigImageCard
 
 const UserCars = ({ navigation }) => {
   const user = useUserState();
@@ -15,6 +16,7 @@ const UserCars = ({ navigation }) => {
         .then((data) => {
           const userCars = data.cars.filter((car) => car.seller._id === user.id);
           setCars(userCars);
+          console.log(userCars)
         })
         .catch((err) => {
           console.log(err);
@@ -37,7 +39,7 @@ const UserCars = ({ navigation }) => {
       <FlatList
         data={cars}
         renderItem={({ item }) => (
-          <BigImageCard item={item} navigation={navigation} />
+          <UserCard item={item} navigation={navigation} />
         )}
         keyExtractor={(item) => item._id}
         contentContainerStyle={{ paddingHorizontal: 10 }}

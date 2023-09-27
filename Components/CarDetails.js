@@ -190,7 +190,9 @@ const CarDetails = ({ car, getCars }) => {
       style = {styles.carModelContainer}
       >
        <ScrollView scrollEnabled={false}>
-      <CarViewer />
+      <CarViewer 
+      car = {car}
+      />
     </ScrollView>
       </View>
       <View style={styles.detailsContainer}>
