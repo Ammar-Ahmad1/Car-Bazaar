@@ -271,13 +271,13 @@ const CarViewer = ({ car }) => {
               scene.add(light);
 
               const camera = new THREE.PerspectiveCamera(
-                80,
+                50,
                 gl.drawingBufferWidth / gl.drawingBufferHeight,
                 0.1,
                 1000
               );
-              camera.position.set(0, 1, 5);
-              camera.lookAt(0, 1, 0);
+              camera.position.set(0, 1, 20);
+              camera.lookAt(0, 1, 20);
 
               const animate = () => {
                 if (modelLoaded && isMoving) {
