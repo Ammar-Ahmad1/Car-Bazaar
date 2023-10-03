@@ -59,20 +59,20 @@ const handleComparePress = () => {
           }}
         >
         <Text
-          style={{ paddingHorizontal: 10, fontSize: 18, paddingVertical: 5 }}
+          style={{ paddingHorizontal: 6, fontSize: 18, paddingVertical: 5 }}
         >
           {item.make} {item.model} {item.year}
         </Text>
-        <Text style={{ paddingHorizontal: 10, fontSize: 18 }}>
+        <Text style={{ paddingHorizontal: 6, fontSize: 18 }}>
           Status:{" "}
           {item.isBiddingOpen
             ? "Bidding Open"
             : item.winningBid
             ? "Sold"
-            : "Bidding not..."}
+            : "Bidding..."}
         </Text>
         </View>
-        <Text style={{ paddingHorizontal: 10, fontSize: 18 }}>
+        <Text style={{ paddingHorizontal: 6, fontSize: 18 }}>
           Current Bid: {item.currentBid===0 ? "No bids yet" :item.currentBid}
         </Text>
         <Button mode="outlined" onPress={handleComparePress} style={{marginVertical:10}}

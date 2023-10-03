@@ -186,14 +186,10 @@ const CarDetails = ({ car, getCars }) => {
           inactiveDotScale={0.6}
         />
       </View>
-      <View
-      style = {styles.carModelContainer}
-      >
-       <ScrollView scrollEnabled={false}>
-      <CarViewer 
-      car = {car}
-      />
-    </ScrollView>
+      <View style={styles.carModelContainer}>
+        <ScrollView scrollEnabled={false}>
+          <CarViewer car={car} />
+        </ScrollView>
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.makeModelText}>
@@ -341,6 +337,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ecf0f1",
+    paddingTop: 40,
   },
   sliderImage: {
     width: 300,

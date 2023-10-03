@@ -174,34 +174,37 @@ const DetailScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Car Details</Text>
-        <CarDetails car={car} getCars={getCars} />
-        {user.id === car.seller._id && (
-  <View style={styles.bidHistory}>
-    <Text style={styles.subtitle}>Bid History</Text>
-    {car.bids.map((bid) => {
-      let bidItemStyle = styles.pendingBidItem; // Default style for pending bids
+      <CarDetails car={car} getCars={getCars} />
+      {user.id === car.seller._id && (
+        <View style={styles.bidHistory}>
+          <Text style={styles.subtitle}>Bid History</Text>
+          {car.bids.map((bid) => {
+            let bidItemStyle = styles.pendingBidItem; // Default style for pending bids
 
-      if (bid.accepted) {
-        bidItemStyle = styles.acceptedBidItem; // Style for accepted bids
-      } else if (bid.rejected) {
-        bidItemStyle = styles.rejectedBidItem; // Style for rejected bids
-      }
+            if (bid.accepted) {
+              bidItemStyle = styles.acceptedBidItem; // Style for accepted bids
+            } else if (bid.rejected) {
+              bidItemStyle = styles.rejectedBidItem; // Style for rejected bids
+            }
 
-      return (
-        <View key={bid._id} style={[styles.bidItem, bidItemStyle]}>
-          <Text>Bid Amount: {bid.bidAmount}</Text>
-          <Text>Bidder: {bid.bidder.email}</Text>
-          <Text>Bid Date: {bid.bidTimestamp}</Text>
-          <Text>
-            Bid Status:{" "}
-            {bid.accepted ? "Accepted" : bid.rejected ? "Rejected" : "Pending"}
-          </Text>
+            return (
+              <View key={bid._id} style={[styles.bidItem, bidItemStyle]}>
+                <Text>Bid Amount: {bid.bidAmount}</Text>
+                <Text>Bidder: {bid.bidder.email}</Text>
+                <Text>Bid Date: {bid.bidTimestamp}</Text>
+                <Text>
+                  Bid Status:{" "}
+                  {bid.accepted
+                    ? "Accepted"
+                    : bid.rejected
+                    ? "Rejected"
+                    : "Pending"}
+                </Text>
+              </View>
+            );
+          })}
         </View>
-      );
-    })}
-  </View>
-)}
+      )}
 
       {user.id !== car.seller._id && (
         <View style={styles.yourBids}>
@@ -253,7 +256,7 @@ const styles = StyleSheet.create({
     // flex: 5,
     flexGrow: 1,
     justifyContent: "center", // Center content vertically
-    backgroundColor: "#fff", // Set your desired background color
+    backgroundColor: "white", // Set your desired background color
     padding: 20,
   },
   title: {

@@ -1,4 +1,4 @@
-const { createCar, getCars, startBidding, placeBid, closeBidding, acceptBid, rejectBid } = require('../controllers/CarController');
+const { createCar, getCars, startBidding, placeBid, closeBidding, acceptBid, rejectBid,deleteCar } = require('../controllers/CarController');
 const upload = require('../Middlewares/multer');
 
 const router = require('express').Router();
@@ -22,5 +22,8 @@ router.post('/accept-bid/:carId/:bidId', acceptBid);
 
 // Reject a bid on a car
 router.post('/reject-bid/:carId/:bidId', rejectBid);
+
+// Delete a car
+router.delete('/delete-car/:carId', deleteCar);
 
 module.exports = router;

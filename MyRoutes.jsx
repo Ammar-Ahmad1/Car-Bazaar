@@ -28,10 +28,46 @@ const MyRoutes = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="AddCar" component={AddCar} />
-        <Stack.Screen name="Detail" component={DetailScreen} />
-        <Stack.Screen name="userCars" component={UserCars} />
+        <Stack.Screen name="Detail" component={DetailScreen} 
+          options = {{
+            headerShown: true,
+            headerTitle: "Car Details",
+            headerTitleStyle: {
+              fontSize: 26,
+              fontWeight: "bold",
+              marginBottom: 20,
+              marginTop: 80,
+              textAlign: "center",
+            },
+          }}
+        />
+        <Stack.Screen name="userCars" component={UserCars} 
+          options = {{
+            headerShown: true,
+            headerTitle: "Your Cars",
+            headerTitleStyle: {
+              fontSize: 26,
+              fontWeight: "bold",
+              marginBottom: 20,
+              marginTop: 80,
+              textAlign: "center",
+            },
+          }}
+        />
         <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="compare" component={CarComparisonScreen} />
+        <Stack.Screen name="compare" component={CarComparisonScreen} 
+          options = {{
+            headerShown: true,
+            headerTitle: "Compare Cars",
+            headerTitleStyle: {
+              fontSize: 26,
+              fontWeight: "bold",
+              marginBottom: 20,
+              marginTop: 80,
+              textAlign: "center",
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

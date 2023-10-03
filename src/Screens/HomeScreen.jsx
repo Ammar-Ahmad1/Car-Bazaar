@@ -289,35 +289,35 @@ const HomeScreen = ({ navigation }) => {
           <FontAwesome name="filter" size={24} color="gray" />
         </TouchableOpacity>
       </View>
+
       <View style={styles.headerContainer}>
-        <Text
+        {/* <Text
           style={{
-            fontSize: Height * 0.03,
+            fontSize: Height * 0.02,
             fontFamily: "Montserrat_Bold",
             color: "#fff",
           }}
         >
           Events
-        </Text>
-        <View
+        </Text> */}
+        {/* <View
           style={{
             width: "100%",
-            marginTop: "4%",
+            // marginTop: "4%",
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
           }}
-        >
-          <FlatList
-            data={events}
-            horizontal
-            renderItem={({ item }) => <EventCard event={item} />}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={{ paddingHorizontal: 10 }}
-          />
-        </View>
+        > */}
+        <FlatList
+          data={events}
+          horizontal
+          renderItem={({ item }) => <EventCard event={item} />}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
+        />
+        {/* </View> */}
       </View>
-
 
       <View style={{ flex: 1, justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -381,11 +381,13 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "white",
   },
   headerContainer: {
-    flex: 0.4,
+    flex: 0.3,
     // marginTop: "5%",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 10,
     backgroundColor: "black",
     borderBottomLeftRadius: 20,
@@ -399,22 +401,21 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 40,
+    marginBottom: "5%",
+
   },
   ImgContainer: {
     marginTop: "10%",
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderRightWidth: 1,
-    borderLeftWidth: 1,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    paddingHorizontal: "5%",
+    paddingTop: "2%",
+    // paddingBottom: "5%",
+    borderBottomWidth: 2,
     borderColor: "#ccc",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     zIndex: 9999,
+    backgroundColor: "white",
   },
   logouttext: {
     fontFamily: "Montserrat_Bold",
@@ -439,12 +440,15 @@ const styles = StyleSheet.create({
   },
   eventCard: {
     flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "lightgrey",
     borderRadius: 10,
     padding: 10,
+    marginBottom: 10,
     marginRight: 20,
-    elevation: 3,
+    // elevation: 5,
+    marginTop: "4%",
   },
   eventImage: {
     width: 100,

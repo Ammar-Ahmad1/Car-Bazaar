@@ -8,7 +8,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./store";
 import { PersistGate } from "redux-persist/integration/react";
 import persistStore from "redux-persist/es/persistStore";
-
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 const Stack = createNativeStackNavigator();
 let persistor = persistStore(store);
 
@@ -32,7 +32,9 @@ export default function App() {
     <View style={{ flex: 1 }}>
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
+          {/* <GestureHandlerRootView> */}
           <MyRoutes />
+          {/* </GestureHandlerRootView> */}
         </PersistGate>
       </ReduxProvider>
     </View>

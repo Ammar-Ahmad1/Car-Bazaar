@@ -246,3 +246,24 @@ module.exports.rejectBid = async (req, res, next) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+module.exports.deleteCar = async (req, res, next) => {
+    const carId = req.params.carId;
+    
+    try {
+      const car = await Car.findById(carId);
+      if (car) {
+        await Car.findByIdAndDelete(carId);
+        res.status(200).json({
+          message: 'Car deleted successfully',
+        });
+        
+      } else {
+        res.status(404).json({ message: 'Car not found' });
+      }
+    }
+    catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  }
